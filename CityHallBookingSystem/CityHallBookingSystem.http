@@ -1,6 +1,6 @@
 @CityHallBookingSystem_HostAddress = http://localhost:5162
 
-GET {{CityHallBookingSystem_HostAddress}}/weatherforecast/
+GET {{CityHallBookingSystem_HostAddress}}/api/resources/
 Accept: application/json
 
 ###
