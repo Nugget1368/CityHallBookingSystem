@@ -5,6 +5,16 @@ Accept: application/json
 
 ###
 
+GET {{CityHallBookingSystem_HostAddress}}/api/resources/3
+Accept: application/json
+
+###
+
+GET {{CityHallBookingSystem_HostAddress}}/api/resources/10
+Accept: application/json
+
+###
+
 POST {{CityHallBookingSystem_HostAddress}}/api/resources
 Content-Type: application/json
 
@@ -12,5 +22,10 @@ Content-Type: application/json
   "reservation": "External",
   "comments": "HTTP POST test - Skapa Extern reservation."
 }
+
+###
+
+DELETE {{CityHallBookingSystem_HostAddress}}/api/resources/5
+Accept: application/json
 
 ###

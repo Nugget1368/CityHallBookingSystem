@@ -23,6 +23,21 @@ namespace CityHallBookingSystem.Controllers
 			var resources = await _dbContext.Resources.ToListAsync();
 			return Ok(resources);
 		}
+
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Resource>> GetResource(int id)
+		{
+			var resource = await _dbContext.Resources
+				.FirstOrDefaultAsync(r => r.Id == id);
+
+			if (resource == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(resource);
+		}
+
 		[HttpPost]
 		public async Task<ActionResult<Resource>> CreateResource(CreateResourceDto resourceDto)
 		{
@@ -36,7 +51,26 @@ namespace CityHallBookingSystem.Controllers
 
 			await _dbContext.SaveChangesAsync();
 
-			return CreatedAtAction(nameof(GetResources), new { id = resource.Id }, resource);
+			return CreatedAtAction(nameof(GetResource), new { id = resource.Id }, resource);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteResource(int id)
+		{
+			var resource = await _dbContext.Resources
+				.Include(r => r.Bookings)
+				.FirstOrDefaultAsync(r => r.Id == id);
+			if (resource == null)
+			{
+				return NotFound();
+			}
+			if (resource.Bookings.Any())
+			{
+				return Conflict("Cannot delete resource with existing bookings.");
+			}
+			_dbContext.Resources.Remove(resource);
+			await _dbContext.SaveChangesAsync();
+			return NoContent();
 		}
 	}
 }
