@@ -1,5 +1,6 @@
 ﻿using CityHallBookingSystem.Data;
 using CityHallBookingSystem.DTOs;
+using CityHallBookingSystem.Mappings;
 using CityHallBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,22 +21,28 @@ namespace CityHallBookingSystem.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
 		{
-		//	var bookings = await _dbContext.Bookings
-		//.Include(b => b.Customer)
-		//.Include(b => b.Resource)
-		//.ToListAsync();
 			var bookings = await _dbContext.Bookings
+				.Include(b => b.Customer)
+				.Include(b => b.Resource)
+				.AsNoTracking()
 				.ToListAsync();
-			return Ok(bookings);
+			var bookingDtos = bookings
+				.Select(BookingMapper.ToDto)
+				.ToList();
+			return Ok(bookingDtos);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Booking>> GetBooking(int id)
 		{
-			var booking = await _dbContext.Bookings.FirstOrDefaultAsync(id);
+			var booking = await _dbContext.Bookings
+				.Include(b => b.Customer)
+				.Include(b => b.Resource)
+				.AsNoTracking()
+				.FirstOrDefaultAsync(b => b.Id == id);
 			if (booking == null)
 				return NotFound();
-			return Ok(booking);
+			return Ok(BookingMapper.ToDto(booking));
 		}
 
 		[HttpPost]

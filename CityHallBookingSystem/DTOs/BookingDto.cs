@@ -6,9 +6,9 @@ namespace CityHallBookingSystem.DTOs
 	{
 		public int Id { get; set; }
 
-		public int CustomerId { get; set; }
+		public CustomerDto Customer { get; set; } = null!;
 
-		public int ResourceId { get; set; }
+		public ResourceDto Resource { get; set; } = null!;
 
 		public DateTime StartTime { get; set; }
 
