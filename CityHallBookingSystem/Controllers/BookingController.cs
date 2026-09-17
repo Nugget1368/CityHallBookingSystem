@@ -46,7 +46,7 @@ namespace CityHallBookingSystem.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Booking>> CreateBooking(CreateBookingDto bookingDto)
+		public async Task<ActionResult<BookingDto>> CreateBooking(CreateBookingDto bookingDto)
 		{
 			if (bookingDto.StartTime >= bookingDto.EndTime)
 				return BadRequest("Start time must be before end time.");
@@ -65,12 +65,15 @@ namespace CityHallBookingSystem.Controllers
 				ResourceId = bookingDto.ResourceId,
 				StartTime = bookingDto.StartTime,
 				EndTime = bookingDto.EndTime,
-				Status = BookingStatus.Confirmed
+				Status = BookingStatus.Confirmed,
+				Customer = customer,
+				Resource = resource
 			};
 
 			_dbContext.Bookings.Add(booking);
 			await _dbContext.SaveChangesAsync();
-			return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
+			var result = BookingMapper.ToDto(booking);
+			return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, result);
 		}
 
 		[HttpPut("{id}/cancel")]

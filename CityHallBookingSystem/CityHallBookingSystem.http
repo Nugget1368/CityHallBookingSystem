@@ -29,3 +29,35 @@ DELETE {{CityHallBookingSystem_HostAddress}}/api/resources/5
 Accept: application/json
 
 ###
+
+GET {{CityHallBookingSystem_HostAddress}}/api/customers
+Accept: application/json
+
+###
+
+POST {{CityHallBookingSystem_HostAddress}}/api/customers
+Content-Type: application/json
+{
+  "name": "Mr. Doe",
+  "phone": "0707654321",
+  "email": "joedoe@gmail.com"
+}
+
+###
+
+GET {{CityHallBookingSystem_HostAddress}}/api/booking
+Accept: application/json
+
+###
+
+POST {{CityHallBookingSystem_HostAddress}}/api/booking
+Content-Type: application/json
+{
+  "customerId": 3,
+  "resourceId": 7,
+  "startTime": "2024-07-01T10:00:00",
+  "endTime": "2024-07-01T12:00:00",
+  "comments": "HTTP POST test - Skapa bokning."
+}
+
+###

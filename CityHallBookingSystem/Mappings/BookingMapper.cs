@@ -1,7 +1,7 @@
 ﻿using CityHallBookingSystem.DTOs;
 using CityHallBookingSystem.Models;
 
-namespace CityHallBookingSystem.Mappings
+namespace CityHallBookingSystem.Mappings;
 	/*
 	 * This class is responsible for mapping Booking entities to BookingDto objects.
 	 * It provides a method to convert a Booking object into its corresponding DTO representation.
@@ -37,4 +37,3 @@ namespace CityHallBookingSystem.Mappings
 			};
 		}
 	}
-}
