@@ -76,5 +76,16 @@ namespace CityHallBookingSystem.Controllers
 			await _dbContext.SaveChangesAsync();
 			return NoContent();
 		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteBooking(int id)
+		{
+			var booking = await _dbContext.Bookings.FirstOrDefaultAsync(b => b.Id == id);
+			if (booking == null)
+				return NotFound();
+			_dbContext.Bookings.Remove(booking);
+			await _dbContext.SaveChangesAsync();
+			return NoContent();
+		}
 	}
 }
