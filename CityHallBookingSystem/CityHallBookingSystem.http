@@ -4,3 +4,13 @@ GET {{CityHallBookingSystem_HostAddress}}/api/resources/
 Accept: application/json
 
 ###
+
+POST {{CityHallBookingSystem_HostAddress}}/api/resources
+Content-Type: application/json
+
+{
+  "reservation": "External",
+  "comments": "HTTP POST test - Skapa Extern reservation."
+}
+
+###
