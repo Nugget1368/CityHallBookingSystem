@@ -78,6 +78,24 @@ namespace CityHallBookingSystem.Controllers
 			return NoContent();
 		}
 
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateBooking(int id, UpdateBookingDto bookingDto)
+		{
+			if (bookingDto.StartTime >= bookingDto.EndTime)
+				return BadRequest("Start time must be before end time.");
+			var booking = await _dbContext.Bookings.FindAsync(id);
+			if (booking == null)
+				return NotFound();
+			var resource = await _dbContext.Resources.FindAsync(bookingDto.ResourceId);
+			if (resource == null)
+				return NotFound($"Resource with ID {bookingDto.ResourceId} not found.");
+			booking.ResourceId = bookingDto.ResourceId;
+			booking.StartTime = bookingDto.StartTime;
+			booking.EndTime = bookingDto.EndTime;
+			await _dbContext.SaveChangesAsync();
+			return NoContent();
+		}
+
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteBooking(int id)
 		{

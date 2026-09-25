@@ -55,13 +55,12 @@ namespace CityHallBookingSystem.Controllers
 		public async Task<IActionResult> DeleteResource(int id)
 		{
 			var resource = await _dbContext.Resources
-				.Include(r => r.Bookings)
 				.FirstOrDefaultAsync(r => r.Id == id);
 			if (resource == null)
 			{
 				return NotFound();
 			}
-			if (resource.Bookings.Any())
+			if (resource.Booking != null)
 			{
 				return Conflict("Cannot delete resource with existing bookings.");
 			}

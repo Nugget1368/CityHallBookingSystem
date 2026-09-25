@@ -29,6 +29,12 @@ namespace CityHallBookingSystem.Data
 			modelBuilder.Entity<Booking>()
 				.Property(b => b.Status)
 				.HasConversion<string>();
+
+			modelBuilder.Entity<Booking>()
+				.HasOne(b => b.Resource)
+				.WithOne(r => r.Booking)
+				.HasForeignKey<Booking>(b => b.ResourceId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

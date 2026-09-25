@@ -50,7 +50,8 @@ namespace CityHallBookingSystem.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("ResourceId");
+                    b.HasIndex("ResourceId")
+                        .IsUnique();
 
                     b.ToTable("Bookings");
                 });
@@ -110,9 +111,9 @@ namespace CityHallBookingSystem.Migrations
                         .IsRequired();
 
                     b.HasOne("CityHallBookingSystem.Models.Resource", "Resource")
-                        .WithMany("Bookings")
-                        .HasForeignKey("ResourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("Booking")
+                        .HasForeignKey("CityHallBookingSystem.Models.Booking", "ResourceId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Customer");
@@ -127,7 +128,7 @@ namespace CityHallBookingSystem.Migrations
 
             modelBuilder.Entity("CityHallBookingSystem.Models.Resource", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.Navigation("Booking");
                 });
 #pragma warning restore 612, 618
         }
