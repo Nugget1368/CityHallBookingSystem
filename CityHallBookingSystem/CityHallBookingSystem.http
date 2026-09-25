@@ -55,6 +55,11 @@ Accept: application/json
 
 ###
 
+GET {{CityHallBookingSystem_HostAddress}}/api/booking/6
+Accept: application/json
+
+###
+
 POST {{CityHallBookingSystem_HostAddress}}/api/booking
 Content-Type: application/json
 {

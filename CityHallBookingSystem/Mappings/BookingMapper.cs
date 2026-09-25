@@ -36,4 +36,16 @@ namespace CityHallBookingSystem.Mappings;
 				Status = booking.Status,
 			};
 		}
+	public static Booking ToEntity(BookingDto bookingDto)
+		{
+			return new Booking
+			{
+				Id = bookingDto.Id,
+				CustomerId = bookingDto.Customer.Id,
+				ResourceId = bookingDto.Resource.Id,
+				StartTime = bookingDto.StartTime,
+				EndTime = bookingDto.EndTime,
+				Status = bookingDto.Status
+			};
 	}
+}
