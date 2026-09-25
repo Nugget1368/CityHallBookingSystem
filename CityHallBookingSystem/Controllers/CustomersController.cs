@@ -33,13 +33,13 @@ namespace CityHallBookingSystem.Controllers
 			return Ok(customerDto);
 		}
 		[HttpPost]
-		public async Task<ActionResult<CustomerDto>> CreateCustomer(CustomerDto customerDto)
+		public async Task<ActionResult<CustomerDto>> CreateCustomer(CreateCustomerDto customerDto)
 		{
 			var customer = CustomerMapper.ToEntity(customerDto);
 			_dbContext.Customers.Add(customer);
 			await _dbContext.SaveChangesAsync();
-			customerDto.Id = customer.Id;
-			return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customerDto);
+			var result = CustomerMapper.ToDto(customer);
+			return CreatedAtAction(nameof(GetCustomer), new { id = result.Id }, result);
 		}
 	}
 }

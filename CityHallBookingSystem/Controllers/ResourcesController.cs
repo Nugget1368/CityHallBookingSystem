@@ -1,5 +1,6 @@
 ﻿using CityHallBookingSystem.Data;
 using CityHallBookingSystem.DTOs;
+using CityHallBookingSystem.Mappings;
 using CityHallBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,11 +42,7 @@ namespace CityHallBookingSystem.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Resource>> CreateResource(CreateResourceDto resourceDto)
 		{
-			var resource = new Resource()
-			{
-				Reservation = resourceDto.Reservation,
-				Comments = resourceDto.Comments,
-			};
+			var resource = ResourceMapper.ToEntity(resourceDto);
 
 			_dbContext.Resources.Add(resource);
 

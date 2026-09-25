@@ -36,16 +36,20 @@ namespace CityHallBookingSystem.Mappings;
 				Status = booking.Status,
 			};
 		}
-	public static Booking ToEntity(BookingDto bookingDto)
+	/// <summary>
+	/// Maps a CreateBookingDto object to a Booking entity.
+	/// </summary>
+	/// <param name="bookingDto">The CreateBookingDto object to map.</param>
+	/// <returns>The corresponding Booking entity.</returns>
+	public static Booking ToEntity(CreateBookingDto bookingDto)
 		{
 			return new Booking
 			{
-				Id = bookingDto.Id,
-				CustomerId = bookingDto.Customer.Id,
-				ResourceId = bookingDto.Resource.Id,
+				CustomerId = bookingDto.CustomerId,
+				ResourceId = bookingDto.ResourceId,
 				StartTime = bookingDto.StartTime,
 				EndTime = bookingDto.EndTime,
-				Status = bookingDto.Status
+				Status = BookingStatus.Confirmed // Default status for new bookings
 			};
 	}
 }

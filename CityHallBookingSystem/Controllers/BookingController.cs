@@ -59,16 +59,7 @@ namespace CityHallBookingSystem.Controllers
 			if (resource == null)
 				return NotFound($"Resource with ID {bookingDto.ResourceId} not found.");
 
-			var booking = new Booking
-			{
-				CustomerId = bookingDto.CustomerId,
-				ResourceId = bookingDto.ResourceId,
-				StartTime = bookingDto.StartTime,
-				EndTime = bookingDto.EndTime,
-				Status = BookingStatus.Confirmed,
-				Customer = customer,
-				Resource = resource
-			};
+			var booking = BookingMapper.ToEntity(bookingDto);
 
 			_dbContext.Bookings.Add(booking);
 			await _dbContext.SaveChangesAsync();

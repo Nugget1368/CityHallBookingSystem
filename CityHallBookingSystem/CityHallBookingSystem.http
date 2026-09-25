@@ -13,9 +13,9 @@ Accept: application/json
 POST {{CityHallBookingSystem_HostAddress}}/api/customers
 Content-Type: application/json
 {
-  "name": "Jojo Star",
+  "name": "Ringo Starr",
   "phone": "0707654321",
-  "email": "joedoe@gmail.com"
+  "email": "ringodingo@hotmail.com"
 }
 
 ###
@@ -30,17 +30,12 @@ Accept: application/json
 
 ###
 
-GET {{CityHallBookingSystem_HostAddress}}/api/resources/10
-Accept: application/json
-
-###
-
 POST {{CityHallBookingSystem_HostAddress}}/api/resources
 Content-Type: application/json
 
 {
-  "reservation": "External",
-  "comments": "HTTP POST test - Skapa Extern reservation."
+  "reservation": "InHouse",
+  "comments": "HTTP POST test - Skapa Privat Bokning."
 }
 
 ###
@@ -63,10 +58,10 @@ Accept: application/json
 POST {{CityHallBookingSystem_HostAddress}}/api/booking
 Content-Type: application/json
 {
-  "customerId": 3,
-  "resourceId": 7,
-  "startTime": "2024-07-01T10:00:00",
-  "endTime": "2024-07-01T12:00:00"
+  "customerId": 5,
+  "resourceId": 8,
+  "startTime": "2027-05-01T10:00:00",
+  "endTime": "2027-05-01T11:00:00"
 }
 
 ###
