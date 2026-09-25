@@ -3,6 +3,7 @@ using CityHallBookingSystem.DTOs;
 using CityHallBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CityHallBookingSystem.Mappings;
 
 namespace CityHallBookingSystem.Controllers
 {
@@ -19,13 +20,7 @@ namespace CityHallBookingSystem.Controllers
 		public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
 		{
 			var customers = await _dbContext.Customers.AsNoTracking().ToListAsync();
-			var customerDtos = customers.Select(c => new CustomerDto
-			{
-				Id = c.Id,
-				Name = c.Name,
-				Email = c.Email,
-				Phone = c.Phone
-			}).ToList();
+			var customerDtos = customers.Select(c => CustomerMapper.ToDto(c)).ToList();
 			return Ok(customerDtos);
 		}
 		[HttpGet("{id}")]
@@ -34,24 +29,13 @@ namespace CityHallBookingSystem.Controllers
 			var customer = await _dbContext.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
 			if (customer == null)
 				return NotFound();
-			var customerDto = new CustomerDto
-			{
-				Id = customer.Id,
-				Name = customer.Name,
-				Email = customer.Email,
-				Phone = customer.Phone
-			};
+			var customerDto = CustomerMapper.ToDto(customer);
 			return Ok(customerDto);
 		}
 		[HttpPost]
 		public async Task<ActionResult<CustomerDto>> CreateCustomer(CustomerDto customerDto)
 		{
-			var customer = new Customer
-			{
-				Name = customerDto.Name,
-				Email = customerDto.Email,
-				Phone = customerDto.Phone
-			};
+			var customer = CustomerMapper.ToEntity(customerDto);
 			_dbContext.Customers.Add(customer);
 			await _dbContext.SaveChangesAsync();
 			customerDto.Id = customer.Id;
