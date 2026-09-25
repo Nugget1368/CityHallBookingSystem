@@ -1,4 +1,14 @@
-﻿# City Hall Booking System
+﻿# Todo list
+1. Implementera Services för att hantera affärslogik och databasinteraktioner.7
+2. Model-validering med Data Annotations.
+3. Authentisering
+4. Admin autentisering
+5. Reservations med typ InHouse ska endast kunna läggas till av Admin. Dessa ska däremot kunna bokas av alla användare.
+6. Man måste inte ha ett konto, men tidigare användare ska länkas till sina tidigare bokningar.
+7. Koppla till outlook-kalender.
+
+
+# City Hall Booking System
 Booking System for making private bookings and reservations for City Hall facilities. This system allows users to view available time slots, make reservations, and manage their bookings efficiently.
 
 ## Features
