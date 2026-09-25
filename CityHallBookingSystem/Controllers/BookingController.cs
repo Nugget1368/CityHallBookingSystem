@@ -19,7 +19,7 @@ namespace CityHallBookingSystem.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
+		public async Task<ActionResult<IEnumerable<BookingDto>>> GetBookings()
 		{
 			var bookings = await _dbContext.Bookings
 				.Include(b => b.Customer)
@@ -33,7 +33,7 @@ namespace CityHallBookingSystem.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Booking>> GetBooking(int id)
+		public async Task<ActionResult<BookingDto>> GetBooking(int id)
 		{
 			var booking = await _dbContext.Bookings
 				.Include(b => b.Customer)
