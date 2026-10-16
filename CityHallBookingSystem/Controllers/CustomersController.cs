@@ -4,6 +4,7 @@ using CityHallBookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CityHallBookingSystem.Mappings;
+using CityHallBookingSystem.Services.Customer;
 
 namespace CityHallBookingSystem.Controllers
 {
@@ -11,35 +12,36 @@ namespace CityHallBookingSystem.Controllers
 	[Route("api/[controller]")]
 	public class CustomersController : ControllerBase
 	{
-		private readonly BookingDbContext _dbContext;
-		public CustomersController(BookingDbContext dbContext)
+		private readonly ICustomerService _customerService;
+
+		public CustomersController(ICustomerService customerService)
 		{
-			_dbContext = dbContext;
+			_customerService = customerService;
 		}
+
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
 		{
-			var customers = await _dbContext.Customers.AsNoTracking().ToListAsync();
-			var customerDtos = customers.Select(c => CustomerMapper.ToDto(c)).ToList();
-			return Ok(customerDtos);
+			var result = await _customerService.GetCustomers();
+			if (!result.Success)
+				return BadRequest(result.Message);
+			return Ok(result.Data);
 		}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<CustomerDto>> GetCustomer(int id)
 		{
-			var customer = await _dbContext.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
-			if (customer == null)
-				return NotFound();
-			var customerDto = CustomerMapper.ToDto(customer);
-			return Ok(customerDto);
+			var result = await _customerService.GetCustomer(id);
+			if (!result.Success)
+				return NotFound(result.Message);
+			return Ok(result.Data);
 		}
 		[HttpPost]
 		public async Task<ActionResult<CustomerDto>> CreateCustomer(CreateCustomerDto customerDto)
 		{
-			var customer = CustomerMapper.ToEntity(customerDto);
-			_dbContext.Customers.Add(customer);
-			await _dbContext.SaveChangesAsync();
-			var result = CustomerMapper.ToDto(customer);
-			return CreatedAtAction(nameof(GetCustomer), new { id = result.Id }, result);
+			var result = await _customerService.CreateCustomer(customerDto);
+			if (!result.Success)
+				return BadRequest(result.Message);
+			return Ok(result.Data);
 		}
 	}
 }

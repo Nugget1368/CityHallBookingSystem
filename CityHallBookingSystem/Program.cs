@@ -1,5 +1,6 @@
 using CityHallBookingSystem.Data;
 using CityHallBookingSystem.Services.Booking;
+using CityHallBookingSystem.Services.Customer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
         builder.Configuration.GetConnectionString("BookingDatabase")));
 
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
