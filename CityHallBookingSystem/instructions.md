@@ -1,5 +1,7 @@
 ﻿# Todo list
-1. Implementera Services för att hantera affärslogik och databasinteraktioner. *Vi är här
+1. Implementera Services för att hantera affärslogik och databasinteraktioner.
+	a) Konvertera controllers till service. *KLAR*
+	b) Utvidga Customer Service med DELETE och PUT metoder. *Vi är här*
 2. Model-validering med Data Annotations.
 3. Authentisering
 4. Admin autentisering
@@ -292,3 +294,71 @@ var resource = await _context.Resources
 ```
 
 # Fortsättning - Service för all affärslogik
+## Service - Dependency Injection
+Vi skapar nu en service som hanterar all affärslogik för Respektive Controllers.
+
+### Interface
+Skapa interface för vår Service, detta blir en kontrakt som definierar vilka metoder som ska implementeras i vår service. Vi kan döpa interfacet till `ICustomerService`.
+
+```csharp
+using CityHallBookingSystem.DTOs;
+
+namespace CityHallBookingSystem.Services.Customer
+{
+	public interface ICustomerService
+	{
+		Task<ServiceResult<IEnumerable<CustomerDto>>> GetCustomers();
+		Task<ServiceResult<CustomerDto>> GetCustomer(int id);
+		Task<ServiceResult<CustomerDto>> CreateCustomer(
+			CreateCustomerDto customerDto);
+	}
+}
+```
+
+### Customer Service
+
+Implementera nu Servicen
+```csharp
+public class CustomerService : ICustomerService
+	{
+	}
+```
+
+Vi börjar med Dependency Injection, vi injicerar `BookingDbContext` i vår service för att kunna interagera med databasen.
+```csharp
+		private readonly BookingDbContext _context;
+		public CustomerService(BookingDbContext context)
+		{
+			_context = context;
+		}
+```
+
+Vi behöver nu definiera detta i `Program.cs` för att kunna använda servicen i våra controllers. Vi lägger till följande rad i `Program.cs`:
+```csharp
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+```
+
+Vi kan nu addera metoderna i vår service. Vi börjar med `GetCustomers` som hämtar alla kunder från databasen och returnerar dem som en lista av `CustomerDto`.
+```csharp
+		public async Task<ServiceResult<IEnumerable<CustomerDto>>> GetCustomers()
+		{
+			var customer = await _dbContext.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+			if (customer == null)
+				return ServiceResult<CustomerDto>.Fail(ServiceError.CustomerNotFound, $"Customer with ID {id} not found.");
+			var customerDto = CustomerMapper.ToDto(customer);
+			return ServiceResult<CustomerDto>.Ok(customerDto);
+		}
+```
+
+I Vår *Controller* får vi nu:
+
+```csharp
+	[HttpGet]
+	public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
+	{
+		var result = await _customerService.GetCustomers();
+		if (!result.Success)
+			return BadRequest(result.Message);
+		return Ok(result.Data);
+	}
+```
