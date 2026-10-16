@@ -1,9 +1,7 @@
-﻿using CityHallBookingSystem.Data;
-using CityHallBookingSystem.DTOs;
-using CityHallBookingSystem.Mappings;
-using CityHallBookingSystem.Models;
+﻿using CityHallBookingSystem.DTOs;
+using CityHallBookingSystem.Services.Resource;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace CityHallBookingSystem.Controllers
 {
@@ -11,61 +9,44 @@ namespace CityHallBookingSystem.Controllers
 	[Route("api/[controller]")]
 	public class ResourcesController : ControllerBase
 	{
-		private readonly BookingDbContext _dbContext;
+		private readonly IResourceService _resourceService;
 
-		public ResourcesController(BookingDbContext dbContext)
+		public ResourcesController(IResourceService resourceService)
 		{
-			_dbContext = dbContext;
+			_resourceService = resourceService;
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Resource>>> GetResources()
+		public async Task<ActionResult<IEnumerable<ResourceDto>>> GetResources()
 		{
-			var resources = await _dbContext.Resources.ToListAsync();
-			return Ok(resources);
+			var result = await _resourceService.GetResources();
+			return Ok(result);
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Resource>> GetResource(int id)
+		public async Task<ActionResult<ResourceDto>> GetResource(int id)
 		{
-			var resource = await _dbContext.Resources
-				.FirstOrDefaultAsync(r => r.Id == id);
-
-			if (resource == null)
-			{
-				return NotFound();
-			}
-
-			return Ok(resource);
+			var result = await _resourceService.GetResource(id);
+			if(!result.Success)
+				return NotFound(result.Message);
+			return Ok(result.Data);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Resource>> CreateResource(CreateResourceDto resourceDto)
+		public async Task<ActionResult<ResourceDto>> CreateResource(CreateResourceDto resourceDto)
 		{
-			var resource = ResourceMapper.ToEntity(resourceDto);
-
-			_dbContext.Resources.Add(resource);
-
-			await _dbContext.SaveChangesAsync();
-
-			return CreatedAtAction(nameof(GetResource), new { id = resource.Id }, resource);
+			var result = await _resourceService.CreateResource(resourceDto);
+			if(!result.Success)
+				return BadRequest(result.Message);
+			return CreatedAtAction(nameof(GetResource), new { id = result.Data!.Id }, result.Data);
 		}
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteResource(int id)
 		{
-			var resource = await _dbContext.Resources
-				.FirstOrDefaultAsync(r => r.Id == id);
-			if (resource == null)
-			{
-				return NotFound();
-			}
-			if (resource.Booking != null)
-			{
-				return Conflict("Cannot delete resource with existing bookings.");
-			}
-			_dbContext.Resources.Remove(resource);
-			await _dbContext.SaveChangesAsync();
+			var result = await _resourceService.DeleteResource(id);
+			if (!result.Success)
+				return NotFound(result.Message);
 			return NoContent();
 		}
 	}

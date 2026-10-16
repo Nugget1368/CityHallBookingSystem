@@ -25,7 +25,7 @@ Accept: application/json
 
 ###
 
-GET {{CityHallBookingSystem_HostAddress}}/api/resources/3
+GET {{CityHallBookingSystem_HostAddress}}/api/resources/5
 Accept: application/json
 
 ###
@@ -34,7 +34,7 @@ POST {{CityHallBookingSystem_HostAddress}}/api/resources
 Content-Type: application/json
 
 {
-  "reservation": "External",
+  "reservation": "InHouse",
   "comments": "HTTP POST test - Skapa private Bokning."
 }
 

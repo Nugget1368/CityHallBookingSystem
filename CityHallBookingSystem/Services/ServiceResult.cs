@@ -5,6 +5,7 @@ namespace CityHallBookingSystem.Services
 	public enum ServiceError
 	{
 		None,
+		UnknownError,
 		InvalidTime,
 		BookingNotFound,
 		CustomerNotFound,
