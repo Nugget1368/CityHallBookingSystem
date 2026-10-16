@@ -1,11 +1,12 @@
 ﻿# Todo list
-1. Implementera Services för att hantera affärslogik och databasinteraktioner.7
+1. Implementera Services för att hantera affärslogik och databasinteraktioner. *Vi är här
 2. Model-validering med Data Annotations.
 3. Authentisering
 4. Admin autentisering
 5. Reservations med typ InHouse ska endast kunna läggas till av Admin. Dessa ska däremot kunna bokas av alla användare.
 6. Man måste inte ha ett konto, men tidigare användare ska länkas till sina tidigare bokningar.
 7. Koppla till outlook-kalender.
+8. Felhanterare: dEt hade varit trevligt med en felhanterare som kan fånga upp och därefter returnera rätt status som BadRequest, NotFound, Conflict etc. Vi kan skapa en middleware som fångar upp alla exceptions och returnerar ett standardiserat felmeddelande. 
 
 
 # City Hall Booking System
@@ -290,25 +291,4 @@ var resource = await _context.Resources
 	.FirstOrDefaultAsync(r => r.Id == id);
 ```
 
-# Fortsättning - Färdigställ all CRUD-funktionalitet
-
-Just nu har vi följande:
-
-```
-Customer
-├── GET all
-├── GET by id
-└── POST
-
-Resource
-├── GET all
-├── GET by id
-├── POST
-└── DELETE
-
-Booking
-├── GET all
-├── GET by id
-├── POST
-└── CANCEL
-```
+# Fortsättning - Service för all affärslogik
