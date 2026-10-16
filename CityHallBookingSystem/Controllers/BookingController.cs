@@ -1,12 +1,6 @@
-﻿using CityHallBookingSystem.Data;
-using CityHallBookingSystem.DTOs;
-using CityHallBookingSystem.Handlers;
-using CityHallBookingSystem.Mappings;
-using CityHallBookingSystem.Models;
-using CityHallBookingSystem.Services;
+﻿using CityHallBookingSystem.DTOs;
 using CityHallBookingSystem.Services.Booking;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CityHallBookingSystem.Controllers
 {
@@ -15,6 +9,11 @@ namespace CityHallBookingSystem.Controllers
 	public class BookingController : ControllerBase
 	{
 		private readonly IBookingService _bookingService;
+
+		public BookingController(IBookingService bookingService)
+		{
+			_bookingService = bookingService;
+		}
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<BookingDto>>> GetBookings()

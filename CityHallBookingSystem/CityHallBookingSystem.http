@@ -35,7 +35,7 @@ Content-Type: application/json
 
 {
   "reservation": "External",
-  "comments": "HTTP POST test - Skapa Extern Bokning."
+  "comments": "HTTP POST test - Skapa private Bokning."
 }
 
 ###
@@ -59,7 +59,7 @@ POST {{CityHallBookingSystem_HostAddress}}/api/booking
 Content-Type: application/json
 {
   "customerId": 1,
-  "resourceId": 3,
+  "resourceId": 4,
   "startTime": "2027-05-01T10:00:00",
   "endTime": "2027-05-01T11:00:00"
 }
